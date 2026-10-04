@@ -1,6 +1,7 @@
 @import "tailwindcss" source(".");
 @import "tw-animate-css";
 @import "./vendor/shadcn-tailwind-4.13.0.css";
+@source not "./analytics.ts";
 @font-face{font-family:Portfolio Arabic;src:url('../assets/arabic-regular.woff') format('woff');font-weight:400; font-display:swap}
 @font-face{font-family:Portfolio Arabic;src:url('../assets/arabic-bold.woff') format('woff');font-weight:600 900;font-display:swap}
 :root{--background:#fff;--foreground:#0d2732;--card:#fff;--card-foreground:#0d2732;--popover:#fff;--popover-foreground:#0d2732;--primary:#008878;--primary-foreground:#fff;--secondary:#eff5f5;--secondary-foreground:#15333c;--muted:#f1f5f6;--muted-foreground:#546b73;--accent:#e9f6f4;--accent-foreground:#006a5e;--destructive:#b42536;--border:#dce6e8;--input:#dce6e8;--ring:#00ae99;--radius:.5rem;--ink:#092530;--navy:#071f2a;--teal:#00cbb3;--subtle:#526973;--line:#dce6e8;--font-sans:Arial,Helvetica,sans-serif;--font-mono:monospace}

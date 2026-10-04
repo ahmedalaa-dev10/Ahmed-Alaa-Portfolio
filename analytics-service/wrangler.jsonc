@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ahmed-alaa-private-visits",
+  "main": "src/worker.mjs",
+  "compatibility_date": "2026-05-15",
+  "workers_dev": true,
+  "assets": { "directory": "./ui", "binding": "UI_ASSETS", "run_worker_first": true },
+  "triggers": { "crons": ["*/10 * * * *"] },
+  "vars": {
+    "SITE_URL": "",
+    "NOTIFICATION_CHANNEL": "telegram",
+    "RETENTION_DAYS": "90"
+  },
+  "observability": { "enabled": false }
+}

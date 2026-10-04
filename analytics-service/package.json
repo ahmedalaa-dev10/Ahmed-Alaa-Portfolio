@@ -1,0 +1,20 @@
+{
+  "name": "ahmed-alaa-private-visits",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "telegram-chat-id": "node scripts/telegram-chat-id.mjs",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "test": "node --test test/*.test.mjs",
+    "check": "node --check src/worker.mjs && node --check ui/owner.js && node --check scripts/setup.mjs && node --check scripts/telegram-chat-id.mjs && node --check scripts/prompts.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.92.0",
+    "miniflare": "4.20260515.0",
+    "typescript": "5.9.3"
+  }
+}

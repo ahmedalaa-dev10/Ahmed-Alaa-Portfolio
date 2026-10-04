@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#071f2a">
+  <title>Ahmed Alaa | مركز الزيارات</title>
+  <link rel="stylesheet" href="/owner.css">
+  <script type="module" src="/owner.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="brand"><span class="monogram" dir="ltr">AA</span><div><strong dir="ltr">AHMED ALAA</strong><span data-t="center">مركز الزيارات</span></div></div>
+    <div class="languages" id="languages" dir="ltr" role="group" aria-label="تغيير اللغة"><button type="button" id="ar" lang="ar">العربية</button><span>|</span><button type="button" id="en" lang="en">English</button></div>
+  </header>
+  <main class="container">
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+    <section id="login-panel" class="login-panel" hidden>
+      <div class="eyebrow" data-t="private">لوحة المالك الخاصة</div>
+      <h1 data-t="welcome">أهلًا يا Ahmed.</h1>
+      <p class="subtle" data-t="loginIntro">سجّل الدخول لمتابعة الزيارات وتفاعل الجمهور مع أعمالك.</p>
+      <form id="login-form">
+        <label for="email" data-t="email">البريد الإلكتروني</label>
+        <input id="email" type="email" autocomplete="username" required maxlength="254" dir="ltr">
+        <label for="password" data-t="password">كلمة المرور</label>
+        <input id="password" type="password" autocomplete="current-password" required maxlength="256" dir="ltr">
+        <p id="login-error" class="error" role="alert" hidden></p>
+        <button class="button primary" id="login-button" type="submit" data-t="signIn">تسجيل الدخول</button>
+      </form>
+      <p class="login-note" data-t="loginNote">المحتوى والسجل متاحان لحساب المالك فقط.</p>
+    </section>
+    <section id="dashboard" hidden>
+      <div class="dashboard-heading"><div><span class="eyebrow" data-t="overview">نظرة على الجمهور</span><h1 data-t="visitsTitle">زيارات البورتفوليو.</h1><p class="subtle"><bdi id="owner-email"></bdi> · <span data-t="timezone">الأوقات بتوقيت القاهرة</span></p></div><div class="actions"><a id="own-visit" class="button secondary" target="_blank" rel="noopener noreferrer" data-t="ownVisit">فتح الموقع دون تسجيل زيارتي</a><button id="logout" class="button secondary" type="button" data-t="logout">تسجيل الخروج</button></div></div>
+      <div class="filters"><div class="field"><label for="days" data-t="period">الفترة</label><select id="days"><option value="1" data-t="day">آخر 24 ساعة</option><option value="7" selected data-t="week">آخر 7 أيام</option><option value="30" data-t="month">آخر 30 يومًا</option><option value="90" data-t="quarter">آخر 90 يومًا</option></select></div><div class="field"><label for="source" data-t="source">مصدر الزيارة</label><select id="source"><option value="" data-t="allSources">كل المصادر</option><option value="linkedin">LinkedIn</option><option value="google">Google</option><option value="github">GitHub</option><option value="facebook">Facebook</option><option value="email" data-t="emailSource">البريد</option><option value="direct" data-t="direct">مباشر</option><option value="other" data-t="other">مصادر أخرى</option></select></div><button id="refresh" type="button" class="button primary" data-t="refresh">تحديث السجل</button><span id="updated" class="subtle" aria-live="polite"></span></div>
+      <p id="dashboard-error" class="error" role="alert" hidden></p>
+      <div class="metrics"><article><span data-t="recordedVisits">الزيارات المسجلة</span><strong id="visits-count" dir="ltr">—</strong></article><article><span data-t="projectOpens">فتح المشاريع</span><strong id="project-count" dir="ltr">—</strong></article><article><span data-t="cvClicks">الضغط على تحميل CV</span><strong id="cv-count" dir="ltr">—</strong></article><article><span data-t="contactClicks">الضغط على وسائل التواصل</span><strong id="contact-count" dir="ltr">—</strong></article></div>
+      <div class="insights"><article class="panel"><h2 data-t="sourceBreakdown">مصادر الزيارات</h2><div id="sources-list"></div></article><article class="panel"><h2 data-t="projectInterest">الاهتمام بالمشاريع</h2><div id="projects-list"></div></article></div>
+      <article class="panel log-panel"><div class="panel-heading"><h2 data-t="visitLog">سجل الزيارات</h2><span class="subtle" id="total-visits"></span></div><div class="table-wrap"><table><thead><tr><th data-t="visitTime">وقت الزيارة</th><th data-t="source">مصدر الزيارة</th><th data-t="device">الجهاز</th><th data-t="projectOpens">فتح المشاريع</th><th data-t="cvShort">CV</th><th data-t="contactShort">تواصل</th><th data-t="details">التفاصيل</th></tr></thead><tbody id="visit-rows"></tbody></table></div><p id="empty" class="empty" hidden data-t="empty">لا توجد زيارات مسجلة ضمن هذه الفترة والمصدر.</p><div class="pagination"><button id="previous" class="button secondary" type="button" data-t="previous">السابق</button><span id="page-label" dir="ltr"></span><button id="next" class="button secondary" type="button" data-t="next">التالي</button></div></article>
+      <p class="footnote" data-t="measurementNote">السجل يعبّر عن جلسات مرصودة، وليس أشخاصًا معروفين. تُجمع إعادة التحميل في الجلسة نفسها، وقد تمنع إعدادات الخصوصية بعض الزيارات من الظهور.</p>
+      <p class="footnote"><span data-t="channel">طريقة التنبيه</span>: <bdi id="channel"></bdi> · <span data-t="retention">مدة حفظ السجل بالأيام</span>: <bdi id="retention"></bdi></p><button id="test-notification" class="button secondary" type="button" data-t="testNotification">اختبار التنبيه</button><p id="test-result" class="footnote" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+  <dialog id="visit-dialog"><div class="dialog-heading"><div><span class="eyebrow" data-t="visitDetails">تفاصيل الزيارة</span><h2 id="detail-title"></h2></div><button type="button" id="close-dialog" class="close" aria-label="إغلاق"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button></div><div id="detail-meta" class="detail-meta"></div><p id="detail-note" class="footnote"></p><div class="notification-line"><span id="notification-status"></span><button id="retry-notification" class="button secondary" type="button" hidden data-t="retryNotification">إعادة محاولة التنبيه</button></div><h3 data-t="activity">النشاط المسجل</h3><ol id="event-list" class="events"></ol><p id="detail-error" class="error" role="alert" hidden></p></dialog>
+</body>
+</html>
