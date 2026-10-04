@@ -1,0 +1,464 @@
+[
+  {
+    "project": "audit",
+    "number": 1,
+    "src": "./assets/audit-01-dark.webp",
+    "width": 1919,
+    "height": 878,
+    "caption": {
+      "ar": "تسجيل الدخول — المظهر الداكن",
+      "en": "Sign in — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 1,
+    "src": "./assets/audit-01-light.webp",
+    "width": 1919,
+    "height": 988,
+    "caption": {
+      "ar": "تسجيل الدخول — المظهر الفاتح",
+      "en": "Sign in — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 2,
+    "src": "./assets/audit-02-dark.webp",
+    "width": 1919,
+    "height": 991,
+    "caption": {
+      "ar": "لوحة المتابعة الرئيسية — المظهر الداكن",
+      "en": "Main dashboard — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 2,
+    "src": "./assets/audit-02-light.webp",
+    "width": 1919,
+    "height": 989,
+    "caption": {
+      "ar": "لوحة المتابعة الرئيسية — المظهر الفاتح",
+      "en": "Main dashboard — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 3,
+    "src": "./assets/audit-03-dark.webp",
+    "width": 1919,
+    "height": 993,
+    "caption": {
+      "ar": "مركز رفع التقارير — المظهر الداكن",
+      "en": "Report upload center — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 3,
+    "src": "./assets/audit-03-light.webp",
+    "width": 1919,
+    "height": 991,
+    "caption": {
+      "ar": "مركز رفع التقارير — المظهر الفاتح",
+      "en": "Report upload center — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 4,
+    "src": "./assets/audit-04-dark.webp",
+    "width": 1919,
+    "height": 990,
+    "caption": {
+      "ar": "مراجعة البيع والتحويلات — المظهر الداكن",
+      "en": "Sales and transfers review — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 4,
+    "src": "./assets/audit-04-light.webp",
+    "width": 1919,
+    "height": 988,
+    "caption": {
+      "ar": "مراجعة البيع والتحويلات — المظهر الفاتح",
+      "en": "Sales and transfers review — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 5,
+    "src": "./assets/audit-05-dark.webp",
+    "width": 1919,
+    "height": 994,
+    "caption": {
+      "ar": "مراجعة الوارد — المظهر الداكن",
+      "en": "Incoming stock review — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 5,
+    "src": "./assets/audit-05-light.webp",
+    "width": 1919,
+    "height": 988,
+    "caption": {
+      "ar": "مراجعة الوارد — المظهر الفاتح",
+      "en": "Incoming stock review — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 6,
+    "src": "./assets/audit-06-dark.webp",
+    "width": 1919,
+    "height": 992,
+    "caption": {
+      "ar": "متابعة الخامات — المظهر الداكن",
+      "en": "Material tracking — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 6,
+    "src": "./assets/audit-06-light.webp",
+    "width": 1919,
+    "height": 990,
+    "caption": {
+      "ar": "متابعة الخامات — المظهر الفاتح",
+      "en": "Material tracking — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 7,
+    "src": "./assets/audit-07-dark.webp",
+    "width": 1600,
+    "height": 821,
+    "caption": {
+      "ar": "الجرد وتوثيق المخزون — المظهر الداكن",
+      "en": "Inventory audit and documentation — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 7,
+    "src": "./assets/audit-07-light.webp",
+    "width": 1919,
+    "height": 990,
+    "caption": {
+      "ar": "الجرد وتوثيق المخزون — المظهر الفاتح",
+      "en": "Inventory audit and documentation — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 8,
+    "src": "./assets/audit-08-dark.webp",
+    "width": 1919,
+    "height": 991,
+    "caption": {
+      "ar": "مركز التقارير التنفيذية — المظهر الداكن",
+      "en": "Executive reports — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 8,
+    "src": "./assets/audit-08-light.webp",
+    "width": 1919,
+    "height": 989,
+    "caption": {
+      "ar": "مركز التقارير التنفيذية — المظهر الفاتح",
+      "en": "Executive reports — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 9,
+    "src": "./assets/audit-09-dark.webp",
+    "width": 1919,
+    "height": 988,
+    "caption": {
+      "ar": "المتابعة الإدارية وتقارير HR — المظهر الداكن",
+      "en": "Team administration and HR reports — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 9,
+    "src": "./assets/audit-09-light.webp",
+    "width": 1919,
+    "height": 991,
+    "caption": {
+      "ar": "المتابعة الإدارية وتقارير HR — المظهر الفاتح",
+      "en": "Team administration and HR reports — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 10,
+    "src": "./assets/audit-10-dark.webp",
+    "width": 1919,
+    "height": 991,
+    "caption": {
+      "ar": "إدارة المستخدمين — المظهر الداكن",
+      "en": "User management — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 10,
+    "src": "./assets/audit-10-light.webp",
+    "width": 1919,
+    "height": 994,
+    "caption": {
+      "ar": "إدارة المستخدمين — المظهر الفاتح",
+      "en": "User management — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 11,
+    "src": "./assets/audit-11-dark.webp",
+    "width": 1919,
+    "height": 990,
+    "caption": {
+      "ar": "إدارة الصلاحيات — المظهر الداكن",
+      "en": "Permissions management — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 11,
+    "src": "./assets/audit-11-light.webp",
+    "width": 1919,
+    "height": 988,
+    "caption": {
+      "ar": "إدارة الصلاحيات — المظهر الفاتح",
+      "en": "Permissions management — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 12,
+    "src": "./assets/audit-12-dark.webp",
+    "width": 1916,
+    "height": 987,
+    "caption": {
+      "ar": "الإعدادات — المظهر الداكن",
+      "en": "Settings — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 12,
+    "src": "./assets/audit-12-light.webp",
+    "width": 1919,
+    "height": 989,
+    "caption": {
+      "ar": "الإعدادات — المظهر الفاتح",
+      "en": "Settings — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 13,
+    "src": "./assets/audit-mobile-login-dark.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "تسجيل الدخول على الهاتف — المظهر الداكن",
+      "en": "Mobile sign in — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 13,
+    "src": "./assets/audit-mobile-login-light.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "تسجيل الدخول على الهاتف — المظهر الفاتح",
+      "en": "Mobile sign in — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 14,
+    "src": "./assets/audit-mobile-dashboard-dark.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "لوحة المتابعة على الهاتف — المظهر الداكن",
+      "en": "Mobile dashboard — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 14,
+    "src": "./assets/audit-mobile-dashboard-light.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "لوحة المتابعة على الهاتف — المظهر الفاتح",
+      "en": "Mobile dashboard — light appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 15,
+    "src": "./assets/audit-mobile-menu-dark.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "قائمة التنقل على الهاتف — المظهر الداكن",
+      "en": "Mobile navigation — dark appearance"
+    }
+  },
+  {
+    "project": "audit",
+    "number": 15,
+    "src": "./assets/audit-mobile-menu-light.webp",
+    "width": 592,
+    "height": 1222,
+    "caption": {
+      "ar": "قائمة التنقل على الهاتف — المظهر الفاتح",
+      "en": "Mobile navigation — light appearance"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 1,
+    "src": "./assets/custody-01.webp",
+    "width": 1919,
+    "height": 916,
+    "caption": {
+      "ar": "تسجيل الدخول",
+      "en": "Sign in"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 2,
+    "src": "./assets/custody-02.webp",
+    "width": 1919,
+    "height": 916,
+    "caption": {
+      "ar": "لوحة المتابعة الرئيسية",
+      "en": "Main dashboard"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 3,
+    "src": "./assets/custody-03.webp",
+    "width": 1919,
+    "height": 914,
+    "caption": {
+      "ar": "التنقل بين المواقع",
+      "en": "Site navigation"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 4,
+    "src": "./assets/custody-04.webp",
+    "width": 1919,
+    "height": 913,
+    "caption": {
+      "ar": "صرف عهدة لموظف بكود",
+      "en": "Issue to a coded employee"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 5,
+    "src": "./assets/custody-05.webp",
+    "width": 1919,
+    "height": 907,
+    "caption": {
+      "ar": "صرف عهدة لموظف دون كود",
+      "en": "Issue to an employee without a code"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 6,
+    "src": "./assets/custody-06.webp",
+    "width": 1919,
+    "height": 907,
+    "caption": {
+      "ar": "صرف عهدة لمقاول عن طريق وسيط",
+      "en": "Contractor issue through an intermediary"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 7,
+    "src": "./assets/custody-07.webp",
+    "width": 1919,
+    "height": 907,
+    "caption": {
+      "ar": "استلام العهدة",
+      "en": "Custody returns"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 8,
+    "src": "./assets/custody-08.webp",
+    "width": 1919,
+    "height": 907,
+    "caption": {
+      "ar": "مركز التقارير",
+      "en": "Report center"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 9,
+    "src": "./assets/custody-09.webp",
+    "width": 1919,
+    "height": 904,
+    "caption": {
+      "ar": "تكويد الأصناف والموظفين",
+      "en": "Item and employee coding"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 10,
+    "src": "./assets/custody-10.webp",
+    "width": 1919,
+    "height": 920,
+    "caption": {
+      "ar": "إدارة المستخدمين ومركز التحديثات",
+      "en": "Users and update center"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 11,
+    "src": "./assets/custody-11.webp",
+    "width": 1919,
+    "height": 915,
+    "caption": {
+      "ar": "سجل الحركات",
+      "en": "Movement log"
+    }
+  },
+  {
+    "project": "custody",
+    "number": 12,
+    "src": "./assets/custody-12.webp",
+    "width": 1919,
+    "height": 915,
+    "caption": {
+      "ar": "إدارة الصلاحيات",
+      "en": "Permissions management"
+    }
+  }
+]
