@@ -1,5 +1,5 @@
 {
-  "enabled": false,
-  "endpoint": "",
+  "enabled": true,
+  "endpoint": "https://ahmed-alaa-private-visits.ahmed-alaa842001.workers.dev/api/collect",
   "respectPrivacySignals": true
 }
