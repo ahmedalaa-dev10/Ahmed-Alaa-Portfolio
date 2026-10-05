@@ -1,128 +1,137 @@
-type EventKind = 'visit' | 'project_open' | 'cv_click' | 'contact_click';
-type EventInput = { type: EventKind; target?: string; action?: string };
-type VisitEvent = EventInput & { id: string; at: number };
-type Attribution = { source: string; method: 'utm' | 'referrer' | 'direct'; campaign: string; medium: string };
-type VisitSession = { id: string; last: number; attribution: Attribution; tagged: string };
-type QueuedEvent = { event: VisitEvent; visit: Pick<VisitSession, 'id' | 'attribution'> };
-type AnalyticsConfig = { enabled: boolean; endpoint: string; respectPrivacySignals?: boolean };
-const SESSION_KEY = 'aa-visit-session-v1';
+export const visitSections = ['top', 'about', 'work', 'digital', 'experience', 'skills', 'learning', 'contact'] as const;
+type Section = typeof visitSections[number];
+type Session = { id: string; last: number; seen: Section[] };
+type Pending = { id: string; sections: Section[]; downloads: string[]; tries: number };
+export type VisitConfig = { endpoint: string; respectPrivacySignals?: boolean };
+const SESSION_KEY = 'aa-visit-session-v2';
 const IGNORE_KEY = 'aa-analytics-ignore';
-const SESSION_TTL = 30 * 60 * 1000;
-let accept: ((event: EventInput) => void) | null = null;
+const TTL = 30 * 60 * 1000;
+const UUID = /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i;
 let starting = false;
-const early: EventInput[] = [];
+let excluded = false;
+let stop: (() => void) | null = null;
+let ready = false;
+let earlyDownloads = 0;
+let reportDownload: (() => void) | null = null;
 
-export function deriveAttribution(url: URL, referrer: string): Attribution {
-  const slug = (value: string | null) => value && /^[a-z0-9_-]{1,60}$/i.test(value) ? value.toLowerCase() : '';
-  const tagged = slug(url.searchParams.get('utm_source'));
-  const known = ['linkedin', 'google', 'github', 'facebook', 'email'];
-  if (tagged) return { source: known.includes(tagged) ? tagged : 'other', method: 'utm', campaign: slug(url.searchParams.get('utm_campaign')), medium: slug(url.searchParams.get('utm_medium')) };
+// Called only by the three real CV download links. It never blocks the file.
+export function recordCvDownload() {
+  if (typeof window === 'undefined' || excluded || document.visibilityState !== 'visible') return;
   try {
-    const host = new URL(referrer).hostname.toLowerCase();
-    if (host === url.hostname) return { source: 'direct', method: 'direct', campaign: '', medium: '' };
-    const domains: [string, string[]][] = [['linkedin', ['linkedin.com', 'lnkd.in']], ['google', ['google.com']], ['github', ['github.com']], ['facebook', ['facebook.com', 'fb.com']]];
-    for (const [source, aliases] of domains) if (aliases.some(domain => host === domain || host.endsWith('.' + domain))) return { source, method: 'referrer', campaign: '', medium: 'referral' };
-    return { source: 'other', method: 'referrer', campaign: '', medium: 'referral' };
-  } catch { return { source: 'direct', method: 'direct', campaign: '', medium: '' }; }
+    if (reportDownload) reportDownload();
+    else if (starting && !ready && earlyDownloads < 10) earlyDownloads++;
+  } catch { /* Downloading the CV must remain independent of measurement. */ }
 }
 
-export function trackProjectOpen(project: string, action: 'gallery' | 'details') {
-  const event: EventInput = { type: 'project_open', target: project, action };
-  if (accept) accept(event);
-  else if (starting && early.length < 20) early.push(event);
+export function excludeOwnerVisits() {
+  excluded = true;
+  try { localStorage.setItem(IGNORE_KEY, '1'); } catch {}
+  stop?.();
 }
-
+export async function loadVisitConfig(): Promise<VisitConfig | null> {
+  try {
+    const response = await fetch(new URL('./assets/analytics-config.json', location.href), { cache: 'no-store', credentials: 'omit' });
+    if (!response.ok) return null;
+    const config = await response.json();
+    if (config?.enabled !== true || typeof config.endpoint !== 'string') return null;
+    const endpoint = new URL(config.endpoint);
+    if (endpoint.protocol !== 'https:' || endpoint.pathname !== '/api/collect' || endpoint.search || endpoint.hash || endpoint.username || endpoint.password) return null;
+    return { endpoint: endpoint.href, respectPrivacySignals: config.respectPrivacySignals };
+  } catch { return null; }
+}
 export async function initAnalytics() {
   if (starting || typeof window === 'undefined') return;
   starting = true;
   try {
-    const page = new URL(location.href);
-    const ignore = page.searchParams.get('aa_no_track');
+    const ignore = new URL(location.href).searchParams.get('aa_no_track');
     try {
       if (ignore === '1') localStorage.setItem(IGNORE_KEY, '1');
       if (ignore === '0') localStorage.removeItem(IGNORE_KEY);
-      if (localStorage.getItem(IGNORE_KEY) === '1') return;
-    } catch { if (ignore === '1') return; }
-    const response = await fetch(new URL('./assets/analytics-config.json', page), { cache: 'no-store', credentials: 'omit' });
-    if (!response.ok) return;
-    const config = await response.json() as AnalyticsConfig;
-    if (!config.enabled || !config.endpoint) return;
-    const endpoint = new URL(config.endpoint);
-    if (endpoint.protocol !== 'https:' || endpoint.pathname !== '/api/collect' || endpoint.search || endpoint.hash || endpoint.username || endpoint.password) return;
-    const privacyNavigator = navigator as Navigator & { globalPrivacyControl?: boolean };
-    if (config.respectPrivacySignals !== false && (navigator.doNotTrack === '1' || privacyNavigator.globalPrivacyControl === true)) return;
-    const attribution = deriveAttribution(page, document.referrer);
-    const tagged = page.searchParams.get('utm_source') ? JSON.stringify(attribution) : '';
-    let stored: VisitSession | null = null;
+      excluded = ignore === '1' || localStorage.getItem(IGNORE_KEY) === '1';
+      sessionStorage.removeItem('aa-visit-session-v1');
+    } catch { excluded = ignore === '1'; }
+    if (excluded) return;
+    const config = await loadVisitConfig();
+    if (!config) return;
+    const privacy = navigator as Navigator & { globalPrivacyControl?: boolean };
+    if (config.respectPrivacySignals !== false && (navigator.doNotTrack === '1' || privacy.globalPrivacyControl === true)) return;
+    let stored: Session | null = null;
     try { stored = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch {}
-    const validStored = stored && /^[\da-f]{8}-[\da-f]{4}-4[\da-f]{3}-[89ab][\da-f]{3}-[\da-f]{12}$/i.test(stored.id)
-      && typeof stored.last === 'number' && stored.last <= Date.now() && Date.now() - stored.last < SESSION_TTL
-      && stored.attribution && ['linkedin','google','github','facebook','email','direct','other'].includes(stored.attribution.source)
-      && ['utm','referrer','direct'].includes(stored.attribution.method)
-      && [stored.attribution.medium, stored.attribution.campaign].every(value => typeof value === 'string' && /^[a-z0-9_-]{0,60}$/.test(value));
-    let session: VisitSession = validStored && (!tagged || stored!.tagged === tagged)
-      ? stored! : { id: crypto.randomUUID(), last: Date.now(), attribution, tagged };
-    const queue: QueuedEvent[] = [];
+    const valid = stored && UUID.test(stored.id || '') && typeof stored.last === 'number' && stored.last <= Date.now() && Date.now() - stored.last < TTL
+      && Array.isArray(stored.seen) && stored.seen.length <= visitSections.length && stored.seen.every(id => visitSections.includes(id));
+    let session: Session = valid ? stored! : { id: crypto.randomUUID(), last: Date.now(), seen: [] };
+    const save = () => { try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch {} };
+    const queue: Pending[] = [];
+    const pendingSeen = new Set<Section>();
+    const dwell = new Map<Section, ReturnType<typeof setTimeout>>();
+    const visible = new Set<Section>();
     let timer: ReturnType<typeof setTimeout> | null = null;
     let sending = false;
-    let retries = 0;
-    const save = () => { try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)); } catch {} };
-    const payload = (items: QueuedEvent[]) => ({ session: items[0].visit.id, attribution: items[0].visit.attribution, path: location.pathname, lang: document.documentElement.lang === 'en' ? 'en' : 'ar', events: items.map(item => item.event) });
-    const takeBatch = () => {
-      const other = queue.findIndex(item => item.visit.id !== queue[0].visit.id);
-      return queue.splice(0, Math.min(20, other < 0 ? queue.length : other));
-    };
+    let observer: IntersectionObserver | null = null;
+    const payload = (item: Pending) => ({ session: item.id, path: location.pathname, sections: item.sections, ...(item.downloads.length ? { downloads: item.downloads } : {}) });
     const flush = async () => {
       timer = null;
-      if (sending || !queue.length) return;
+      if (excluded || sending || !queue.length) return;
       sending = true;
-      const chunk = takeBatch();
+      const item = queue.shift()!;
       try {
-        const result = await fetch(endpoint, { method: 'POST', body: JSON.stringify(payload(chunk)), headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, credentials: 'omit', keepalive: true });
-        if (!result.ok && result.status >= 500) throw new Error('Unavailable');
-        retries = 0;
-      } catch {
-        if (++retries <= 2) queue.unshift(...chunk);
-      } finally {
+        const response = await fetch(config.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=UTF-8' }, body: JSON.stringify(payload(item)), credentials: 'omit', keepalive: true });
+        if (!response.ok) throw new Error('unavailable');
+        if (item.id === session.id) {
+          session.seen = [...new Set([...session.seen, ...item.sections])];
+          save();
+        }
+      } catch { if (++item.tries <= 2 && !excluded) queue.unshift(item); }
+      finally {
         sending = false;
-        if (queue.length && !timer) timer = setTimeout(flush, retries ? 3000 : 300);
+        if (queue.length && !excluded) timer = setTimeout(flush, item.tries ? 3000 : 250);
       }
     };
-    accept = event => {
-      if (Date.now() - session.last >= SESSION_TTL) {
-        session = { id: crypto.randomUUID(), last: Date.now(), attribution: deriveAttribution(new URL(location.href), document.referrer), tagged };
-      }
+    const enqueue = (section?: Section, download?: string) => {
+      if (excluded || document.visibilityState !== 'visible') return;
+      if (Date.now() - session.last >= TTL) { session = { id: crypto.randomUUID(), last: Date.now(), seen: [] }; pendingSeen.clear(); }
       session.last = Date.now(); save();
-      if (queue.length >= 40) return;
-      queue.push({ event: { ...event, id: crypto.randomUUID(), at: Date.now() }, visit: { id: session.id, attribution: session.attribution } });
-      if (!timer) timer = setTimeout(flush, event.type === 'visit' ? 400 : 150);
+      if (section && (session.seen.includes(section) || pendingSeen.has(section))) return;
+      if (section) pendingSeen.add(section);
+      const last = queue.at(-1);
+      if (last?.id === session.id && last.tries === 0 && last.downloads.length < 10) { if (section) last.sections.push(section); if (download) last.downloads.push(download); }
+      else if (queue.length < 16) queue.push({ id: session.id, sections: section ? [section] : [], downloads: download ? [download] : [], tries: 0 });
+      if (!timer) timer = setTimeout(flush, 300);
     };
-    const onClick = (event: MouseEvent) => {
-      const anchor = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-      if (!anchor) return;
-      const href = anchor.getAttribute('href') || '';
-      if (anchor.hasAttribute('download') && /Ahmed-Alaa-CV\.pdf(?:$|[?#])/i.test(href)) accept?.({ type: 'cv_click', target: 'cv', action: 'download' });
-      else if (href === '#contact') accept?.({ type: 'contact_click', target: 'section', action: 'navigate' });
-      else if (href.startsWith('mailto:')) accept?.({ type: 'contact_click', target: 'email', action: 'click' });
-      else if (href.startsWith('tel:')) accept?.({ type: 'contact_click', target: 'phone', action: 'click' });
-      else { try { if (new URL(anchor.href).hostname === 'www.linkedin.com') accept?.({ type: 'contact_click', target: 'linkedin', action: 'click' }); } catch {} }
+    const watch = (section: Section) => {
+      if (excluded || dwell.has(section) || document.visibilityState !== 'visible') return;
+      dwell.set(section, setTimeout(() => { dwell.delete(section); if (visible.has(section)) enqueue(section); }, 700));
     };
-    document.addEventListener('click', onClick, { capture: true });
+    const onVisibility = () => {
+      for (const id of dwell.values()) clearTimeout(id);
+      dwell.clear();
+      if (document.visibilityState === 'visible') { enqueue(); visible.forEach(watch); }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    if (typeof IntersectionObserver !== 'undefined') {
+      observer = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          const id = entry.target.id as Section;
+          if (!visitSections.includes(id)) continue;
+          if (entry.isIntersecting) { visible.add(id); watch(id); }
+          else { visible.delete(id); const pending = dwell.get(id); if (pending) clearTimeout(pending); dwell.delete(id); }
+        }
+      }, { rootMargin: '-20% 0px -45% 0px', threshold: 0 });
+      document.querySelectorAll('main > section[id]').forEach(section => observer!.observe(section));
+    }
     window.addEventListener('pagehide', () => {
+      if (excluded) return;
       while (queue.length) {
-        const chunk = takeBatch();
+        const item = queue.shift()!;
         try {
-          const accepted = navigator.sendBeacon(endpoint.href, new Blob([JSON.stringify(payload(chunk))], { type: 'text/plain;charset=UTF-8' }));
-          if (!accepted) { queue.unshift(...chunk); void flush(); break; }
-        } catch { queue.unshift(...chunk); void flush(); break; }
+          if (!navigator.sendBeacon(config.endpoint, new Blob([JSON.stringify(payload(item))], { type: 'text/plain;charset=UTF-8' }))) { queue.unshift(item); void flush(); break; }
+        } catch { queue.unshift(item); void flush(); break; }
       }
     });
-    const startVisit = () => { accept?.({ type: 'visit' }); early.splice(0).forEach(event => accept?.(event)); };
-    // Link previews and background tabs do not trigger a visit until the page becomes visible.
-    if (document.visibilityState === 'visible') startVisit();
-    else {
-      const visible = () => { if (document.visibilityState !== 'visible') return; document.removeEventListener('visibilitychange', visible); startVisit(); };
-      document.addEventListener('visibilitychange', visible);
-    }
-  } catch { /* Analytics failure must never affect portfolio navigation. */ }
+    stop = () => { reportDownload = null; earlyDownloads = 0; observer?.disconnect(); document.removeEventListener('visibilitychange', onVisibility); dwell.forEach(clearTimeout); dwell.clear(); queue.length = 0; if (timer) clearTimeout(timer); };
+    reportDownload = () => enqueue(undefined, crypto.randomUUID());
+    enqueue();
+    for (let count = earlyDownloads; count > 0; count--) reportDownload();
+  } catch { /* Measurement must never interrupt the portfolio. */ }
+  finally { ready = true; earlyDownloads = 0; }
 }
