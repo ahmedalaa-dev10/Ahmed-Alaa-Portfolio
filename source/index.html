@@ -7,6 +7,19 @@
     <meta name="description" content="Ahmed Alaa، مدير مخازن وخدمات لوجستية بخبرة تتجاوز 10 سنوات عبر 5+ مواقع. SAP MM / EWM / SD، تحليل البيانات، أتمتة التقارير ورقمنة المخازن." />
     <title>Ahmed Alaa | مدير مخازن وخدمات لوجستية</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=p04-name" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon-180.png" />
+    <link id="portfolio-manifest" rel="manifest" href="./manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Ahmed Alaa" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <script>
+      (() => {
+        let owner = new URL(location.href).searchParams.get('aa_no_track') === '1';
+        try { owner ||= localStorage.getItem('aa-owner-entry') === '1'; } catch {}
+        if (owner) document.querySelector('#portfolio-manifest').setAttribute('href', './owner.webmanifest');
+      })();
+    </script>
   </head>
   <body>
     <div id="root"><!--portfolio--></div>

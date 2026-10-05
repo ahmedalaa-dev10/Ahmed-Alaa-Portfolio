@@ -39,4 +39,4 @@ await writeFile(path.join(root, 'index.html'), html);
 await writeFile(path.join(root, '.nojekyll'), '');
 await rm(temporary, { recursive: true });
 await rm(renderDirectory, { recursive: true });
-console.log('GitHub Pages files are ready: index.html, favicon.svg and assets/.');
+console.log('GitHub Pages build is ready. Upload index.html, assets/ and the root PWA files together.');

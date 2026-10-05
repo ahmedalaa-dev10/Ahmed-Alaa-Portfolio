@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "أحمد علاء | AHMED ALAA",
+  "short_name": "Ahmed Alaa",
+  "description": "إدارة المخازن والخدمات اللوجستية والتحول الرقمي | Warehouse, logistics and digital operations portfolio",
+  "lang": "ar",
+  "dir": "auto",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071f2a",
+  "theme_color": "#071f2a",
+  "icons": [
+    { "src": "./assets/app-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/app-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./assets/app-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

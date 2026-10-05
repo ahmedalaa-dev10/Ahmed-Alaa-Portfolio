@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#071f2a" />
+  <title>Ahmed Alaa | غير متصل</title>
+  <style>
+    @font-face{font-family:Cairo;src:url('./assets/cairo-arabic.woff2') format('woff2');font-weight:200 1000;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF}
+    @font-face{font-family:Cairo;src:url('./assets/cairo-latin.woff2') format('woff2');font-weight:200 1000;font-display:swap}
+    *{box-sizing:border-box}body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#071f2a;color:#eefafa;font:16px/1.9 Cairo,Tahoma,Arial,sans-serif}html[lang=en] body{font-family:Arial,sans-serif}main{width:min(100%,460px)}.name{color:#00cbb3;font-weight:700;letter-spacing:1px}h1{font-size:1.9rem;line-height:1.5;margin-block:24px 12px}p{color:#cbd8dd;margin-block:0 24px}.languages{display:flex;align-items:center;gap:10px;margin-bottom:18px}button{font:inherit;min-height:44px;cursor:pointer;border:0;border-radius:8px}.languages button{padding:5px 10px;background:transparent;color:#cbd8dd}.languages button[aria-pressed=true]{color:#00cbb3;text-decoration:underline;text-underline-offset:6px}.languages button[lang=ar]{font-family:Cairo,Tahoma,Arial,sans-serif}.retry{background:#00cbb3;color:#071f2a;padding:10px 24px;font-weight:700}button:focus-visible{outline:3px solid #eefafa;outline-offset:3px}
+  </style>
+</head>
+<body>
+  <main>
+    <div class="languages" role="group" aria-label="لغة الموقع" dir="ltr"><button type="button" lang="ar" aria-pressed="true">العربية</button><span aria-hidden="true">|</span><button type="button" lang="en" aria-pressed="false">English</button></div>
+    <span class="name" dir="ltr">AHMED ALAA</span>
+    <h1>أنت غير متصل</h1>
+    <p>اتصل بالإنترنت، ثم أعد المحاولة لفتح البورتفوليو.</p>
+    <button type="button" class="retry">إعادة المحاولة</button>
+  </main>
+  <script>
+    (() => {
+      function language(lang) {
+        const ar = lang === 'ar';
+        document.documentElement.lang = lang;
+        document.documentElement.dir = ar ? 'rtl' : 'ltr';
+        document.title = ar ? 'Ahmed Alaa | غير متصل' : 'Ahmed Alaa | Offline';
+        document.querySelector('h1').textContent = ar ? 'أنت غير متصل' : 'You’re offline';
+        document.querySelector('p').textContent = ar ? 'اتصل بالإنترنت، ثم أعد المحاولة لفتح البورتفوليو.' : 'Connect to the internet, then retry to open the portfolio.';
+        document.querySelector('.retry').textContent = ar ? 'إعادة المحاولة' : 'Retry';
+        document.querySelector('.languages').setAttribute('aria-label', ar ? 'لغة الموقع' : 'Site language');
+        document.querySelectorAll('[lang][type=button]').forEach(button => button.setAttribute('aria-pressed', String(button.lang === lang)));
+      }
+      try { if (localStorage.getItem('ahmed-alaa-language') === 'en') language('en'); } catch {}
+      document.querySelectorAll('[lang][type=button]').forEach(button => button.addEventListener('click', () => {
+        language(button.lang);
+        try { localStorage.setItem('ahmed-alaa-language', button.lang); } catch {}
+      }));
+      document.querySelector('.retry').addEventListener('click', () => location.reload());
+    })();
+  </script>
+</body>
+</html>
