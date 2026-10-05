@@ -85,6 +85,11 @@ export const ui = {
   degree: text('بكالوريوس الاقتصاد', 'Bachelor’s Degree in Economics'),
   university: text('جامعة الزقازيق', 'Zagazig University'),
   courses: text('كورسات وشهادات تعلّم مختارة', 'Selected courses & learning certificates'),
+  viewCertificate: text('عرض', 'View'),
+  downloadCertificate: text('تحميل', 'Download'),
+  viewCertificateLabel: text('عرض الشهادة', 'View certificate'),
+  downloadCertificateLabel: text('تحميل الشهادة', 'Download certificate'),
+  opensInNewTab: text('يفتح في تبويب جديد', 'Opens in a new tab'),
   completion: text('إتمام دورة', 'Course completion'),
   learningPath: text('شهادة مسار تعليمي', 'Learning path certificate'),
   hours: text('96 ساعة · 9.6 CEUs', '96 hours · 9.6 CEUs'),
@@ -145,13 +150,14 @@ export const skills = [
   { icon: 'barcode', title: text('الباركود والتحول الرقمي', 'Barcode & digitization'), items: text('Global Barcode Solutions · التتبّع · وضوح المخزون · إطلاق النظام', 'Global Barcode Solutions · Traceability · Inventory visibility · System rollout') },
   { icon: 'users', title: text('القيادة وتحسين الإجراءات', 'Leadership & process improvement'), items: text('قيادة الفرق · توزيع المهام · التنسيق مع الموردين · التعاون بين الإدارات', 'Team supervision · Task allocation · Vendor coordination · Cross-functional collaboration') },
 ];
-export const courses = [
-  { name: 'CSCMP Supply Chain Foundations: Inventory Management Professional Certificate', provider: 'CSCMP / LinkedIn Learning', date: text('أكتوبر 2026', 'Oct 2026'), type: 'path' },
-  { name: 'BUS606: Operations and Supply Chain Management', provider: 'Saylor University', date: text('سبتمبر 2026', 'Sep 2026'), type: 'course', hours: true },
-  { name: 'SAP Materials Management Essential Training', provider: 'LinkedIn Learning', date: text('سبتمبر 2026', 'Sep 2026'), type: 'course' },
-  { name: 'SAP S/4HANA Essential Training', provider: 'LinkedIn Learning', type: 'course' },
-  { name: 'Supply Chain Foundations: Analytics', provider: 'LinkedIn Learning', date: text('أكتوبر 2026', 'Oct 2026'), type: 'course' },
-  { name: 'Excel Supply Chain Analysis: Solving Inventory Problems', provider: 'LinkedIn Learning', type: 'course' },
-  { name: 'Inventory Management Foundations', provider: 'LinkedIn Learning', type: 'course' },
-  { name: 'Foundations of Working Capital Management', provider: 'LinkedIn Learning', type: 'course' },
+export type Course = { name: string; provider: string; date?: Text; type: 'path' | 'course'; hours?: boolean; certificate?: string };
+export const courses: Course[] = [
+  { name: 'CSCMP Supply Chain Foundations: Inventory Management Professional Certificate', provider: 'CSCMP / LinkedIn Learning', date: text('أكتوبر 2026', 'Oct 2026'), type: 'path', certificate: './assets/certificates/cscmp-inventory-management.pdf' },
+  { name: 'BUS606: Operations and Supply Chain Management', provider: 'Saylor University', date: text('سبتمبر 2026', 'Sep 2026'), type: 'course', hours: true, certificate: './assets/certificates/bus606-operations-supply-chain-management.pdf' },
+  { name: 'SAP Materials Management Essential Training', provider: 'LinkedIn Learning', date: text('سبتمبر 2026', 'Sep 2026'), type: 'course', certificate: './assets/certificates/sap-materials-management-essential-training.pdf' },
+  { name: 'SAP S/4HANA Essential Training', provider: 'LinkedIn Learning', type: 'course', certificate: './assets/certificates/sap-s4hana-essential-training.pdf' },
+  { name: 'Supply Chain Foundations: Analytics', provider: 'LinkedIn Learning', date: text('أكتوبر 2026', 'Oct 2026'), type: 'course', certificate: './assets/certificates/supply-chain-foundations-analytics.pdf' },
+  { name: 'Excel Supply Chain Analysis: Solving Inventory Problems', provider: 'LinkedIn Learning', type: 'course', certificate: './assets/certificates/excel-supply-chain-inventory-problems.pdf' },
+  { name: 'Inventory Management Foundations', provider: 'LinkedIn Learning', type: 'course', certificate: './assets/certificates/inventory-management-foundations.pdf' },
+  { name: 'Foundations of Working Capital Management', provider: 'LinkedIn Learning', type: 'course', certificate: './assets/certificates/working-capital-management-foundations.pdf' },
 ];
