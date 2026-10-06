@@ -23,6 +23,10 @@ const { render } = await import(pathToFileURL(path.join(renderDirectory, 'render
 const template = await readFile(path.join(temporary, 'index.html'), 'utf8');
 if (!template.includes('<!--portfolio-->')) throw new Error('Missing portfolio render marker.');
 const html = template.replace('<!--portfolio-->', render());
+const publicManifest = '<link id="portfolio-manifest" rel="manifest" href="./manifest.webmanifest"';
+if (!html.includes(publicManifest)) throw new Error('Missing fixed public manifest link.');
+// Both pages use the same rendered portfolio. The owner page has predeclared install metadata in its initial HTML.
+const ownerHtml = html.replace(publicManifest, '<meta name="robots" content="noindex, nofollow" />\n    <link id="portfolio-manifest" rel="manifest" href="./owner.webmanifest"');
 
 async function copyOutput(directory, destination) {
   await mkdir(destination, { recursive: true });
@@ -36,6 +40,7 @@ async function copyOutput(directory, destination) {
 }
 await copyOutput(temporary, root);
 await writeFile(path.join(root, 'index.html'), html);
+await writeFile(path.join(root, 'owner-app.html'), ownerHtml);
 await writeFile(path.join(root, '.nojekyll'), '');
 await rm(temporary, { recursive: true });
 await rm(renderDirectory, { recursive: true });

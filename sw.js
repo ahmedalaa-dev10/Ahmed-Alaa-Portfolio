@@ -1,6 +1,6 @@
 /* Only public offline resources belong in this cache. No private responses or visitor events. */
 const CACHE_PREFIX = 'aa-portfolio-public-offline-';
-const CACHE_NAME = CACHE_PREFIX + 'p05';
+const CACHE_NAME = CACHE_PREFIX + 'p07';
 const base = new URL(self.registration.scope);
 const offline = new URL('./offline.html', base).href;
 const fonts = ['./assets/cairo-arabic.woff2', './assets/cairo-latin.woff2'].map(path => new URL(path, base).href);
@@ -22,7 +22,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(caches.open(CACHE_NAME).then(async cache => (await cache.match(request)) || fetch(request)));
     return;
   }
-  const appDocument = url.pathname === base.pathname || url.pathname === new URL('./index.html', base).pathname;
+  const appDocument = [base.pathname, ...['index.html', 'owner-app.html'].map(path => new URL(path, base).pathname)].includes(url.pathname);
   if (request.mode !== 'navigate' || !appDocument) return;
   event.respondWith(fetch(request).catch(async () => {
     const cached = await caches.open(CACHE_NAME).then(cache => cache.match(offline));

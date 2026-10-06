@@ -1,11 +1,11 @@
 {
-  "id": "./",
+  "id": "./owner-app.html",
   "name": "أحمد علاء | AHMED ALAA",
   "short_name": "Ahmed Alaa",
   "description": "إدارة المخازن والخدمات اللوجستية والتحول الرقمي | Warehouse, logistics and digital operations portfolio",
   "lang": "ar",
   "dir": "auto",
-  "start_url": "./?aa_no_track=1#top",
+  "start_url": "./owner-app.html#top",
   "scope": "./",
   "display": "standalone",
   "background_color": "#071f2a",

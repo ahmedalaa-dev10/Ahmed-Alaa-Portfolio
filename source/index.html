@@ -15,9 +15,15 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <script>
       (() => {
-        let owner = new URL(location.href).searchParams.get('aa_no_track') === '1';
-        try { owner ||= localStorage.getItem('aa-owner-entry') === '1'; } catch {}
-        if (owner) document.querySelector('#portfolio-manifest').setAttribute('href', './owner.webmanifest');
+        const current = new URL(location.href);
+        const target = new URL('./owner-app.html', current);
+        const flag = current.searchParams.get('aa_no_track');
+        let owner = flag === '1';
+        try { owner ||= flag !== '0' && localStorage.getItem('aa-owner-entry') === '1'; } catch {}
+        if (owner && current.pathname !== target.pathname) {
+          target.hash = current.hash || '#top';
+          location.replace(target.href);
+        }
       })();
     </script>
   </head>

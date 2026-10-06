@@ -3,6 +3,7 @@ import { Monitor, Smartphone, Download, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { type Lang, ui } from './content';
 import { getInstallState, getServerInstallState, promptInstall, subscribeInstall } from './pwa';
+import { hasOwnerEntry, isOwnerLaunchPage, ownerLaunchUrl } from './owner-entry';
 
 const words = {
   button: { ar: 'تثبيت البورتفوليو', en: 'Install portfolio' },
@@ -51,9 +52,17 @@ export default function InstallApp({ lang, languageSwitch }: { lang: Lang; langu
     if (result === 'accepted') setOpen(false);
     else if (result === 'error' || result === 'unavailable') setFailed(true);
   };
+  const openInstall = () => {
+    // Load the owner's dedicated install document before the browser saves app metadata.
+    if (hasOwnerEntry() && !isOwnerLaunchPage()) {
+      location.assign(ownerLaunchUrl());
+      return;
+    }
+    setFailed(false); setOpen(true);
+  };
   if (state === 'installed') return null;
   return <>
-    <button ref={entry} className="install-entry" type="button" onClick={() => { setFailed(false); setOpen(true); }}><Download size={15} aria-hidden="true" />{words.button[lang]}</button>
+    <button ref={entry} className="install-entry" type="button" onClick={openInstall}><Download size={15} aria-hidden="true" />{words.button[lang]}</button>
     <Dialog open={open} onOpenChange={setOpen}><DialogContent className="install-dialog" showCloseButton={false} dir={lang === 'ar' ? 'rtl' : 'ltr'} onCloseAutoFocus={event => { event.preventDefault(); entry.current?.focus({ preventScroll: true }); }}>
       <div className="install-heading"><div><DialogTitle>{words.title[lang]}</DialogTitle><DialogDescription>{words.intro[lang]}</DialogDescription></div><button className="install-close" type="button" aria-label={ui.close[lang]} onClick={() => setOpen(false)}><X size={22} /></button></div>
       <div className="install-languages">{languageSwitch}</div>

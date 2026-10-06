@@ -1,3 +1,5 @@
+import { isOwnerLaunchPage, OWNER_ENTRY_KEY } from './owner-entry';
+
 export const visitSections = ['top', 'about', 'work', 'digital', 'experience', 'skills', 'learning', 'contact'] as const;
 type Section = typeof visitSections[number];
 type Session = { id: string; last: number; seen: Section[] };
@@ -44,12 +46,15 @@ export async function initAnalytics() {
   starting = true;
   try {
     const ignore = new URL(location.href).searchParams.get('aa_no_track');
+    // The installed owner's launch path works with empty or unavailable browser storage.
+    excluded = isOwnerLaunchPage() || ignore === '1';
     try {
-      if (ignore === '1') localStorage.setItem(IGNORE_KEY, '1');
-      if (ignore === '0') localStorage.removeItem(IGNORE_KEY);
-      excluded = ignore === '1' || localStorage.getItem(IGNORE_KEY) === '1';
+      if (excluded) localStorage.setItem(IGNORE_KEY, '1');
+      else if (ignore === '0') localStorage.removeItem(IGNORE_KEY);
+      excluded ||= localStorage.getItem(IGNORE_KEY) === '1'
+        || (ignore !== '0' && localStorage.getItem(OWNER_ENTRY_KEY) === '1');
       sessionStorage.removeItem('aa-visit-session-v1');
-    } catch { excluded = ignore === '1'; }
+    } catch { /* Keep the launch-path exclusion even when storage is unavailable. */ }
     if (excluded) return;
     const config = await loadVisitConfig();
     if (!config) return;

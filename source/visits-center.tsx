@@ -3,6 +3,7 @@ import { LockKeyhole, RefreshCw, LogOut, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { excludeOwnerVisits, loadVisitConfig, visitSections } from './analytics';
 import { ui, type Lang } from './content';
+import { hasOwnerEntry, OWNER_ENTRY_KEY } from './owner-entry';
 
 const words = {
   entry: { ar: 'مركز الزيارات', en: 'Visits center' },
@@ -54,7 +55,7 @@ export default function VisitsCenter({ lang, changeLanguage }: { lang: Lang; cha
   const generation = useRef(0);
   const active = useRef<AbortController | null>(null);
   const entry = useRef<HTMLButtonElement | null>(null);
-  const rememberEntry = () => { setEntryVisible(true); try { localStorage.setItem('aa-owner-entry', '1'); } catch {} window.dispatchEvent(new Event('aa-owner-mode')); };
+  const rememberEntry = () => { setEntryVisible(true); try { localStorage.setItem(OWNER_ENTRY_KEY, '1'); } catch {} };
   const number = (value: number) => new Intl.NumberFormat(lang === 'ar' ? 'ar-EG' : 'en-GB').format(value);
   const sectionName = (id: string) => id === 'top' ? (lang === 'ar' ? 'المقدمة' : 'Introduction') : id === 'contact' ? ui.contact[lang] : ui.nav.find(item => item.id === id)?.label[lang] || '';
   const cancel = () => { generation.current++; active.current?.abort(); active.current = null; };
@@ -82,8 +83,7 @@ export default function VisitsCenter({ lang, changeLanguage }: { lang: Lang; cha
   const changeOpen = (next: boolean) => { cancel(); setPassword(''); setError(''); setMessage(false); setBusy(false); setOpen(next); };
   useEffect(() => {
     if (location.hash === '#owner') setOpen(true);
-    if (new URL(location.href).searchParams.get('aa_no_track') === '1') rememberEntry();
-    else { try { setEntryVisible(localStorage.getItem('aa-owner-entry') === '1'); } catch {} }
+    if (hasOwnerEntry()) rememberEntry();
     const pageshow = (event: PageTransitionEvent) => { if (event.persisted) { cancel(); clearPrivate(); setOpen(false); } };
     window.addEventListener('pageshow', pageshow);
     return () => { cancel(); window.removeEventListener('pageshow', pageshow); };
